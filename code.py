@@ -1,25 +1,21 @@
 import os
 from PIL import Image
 
-# dossier actuel
-folder = "."
+threshold = 128
 
-# parcourir tous les fichiers
-for file in os.listdir(folder):
+for file in os.listdir("."):
 
-    # vérifier si c'est une image png ou jpg
     if file.endswith(".png") or file.endswith(".jpg"):
 
-        # ouvrir l'image
         img = Image.open(file)
 
-        # convertir en grayscale
+        # grayscale
         gray = img.convert("L")
 
-        # nom du nouveau fichier
-        new_name = "gray_" + file
+        # binarisation
+        binary = gray.point(lambda x: 255 if x > threshold else 0)
 
-        # sauvegarder
-        gray.save(new_name)
+        # sauvegarde
+        binary.save("binary_" + file)
 
-        print(f"{file} convertie en {new_name}")
+        print(f"{file} -> binary_{file}")
