@@ -12,10 +12,13 @@ for file in os.listdir("."):
 
         img = Image.open(file)
 
+        # matrice pixels
         matrix = np.array(img)
 
-        vector = vector = (matrix > 200).astype(int).flatten()
+        # binarisation + vecteur
+        vector = (matrix > 100).astype(int).flatten()
 
+        # récupérer le chiffre dans le nom du fichier
         digit = file.split("Group ")[1][0]
 
         if digit not in dataset:
@@ -23,26 +26,24 @@ for file in os.listdir("."):
 
         dataset[digit].append(vector)
 
+
 # -------- Load test image --------
 
 img = Image.open("test_1.png")
 
-# convertir en grayscale
+# preprocessing identique au dataset
 img = img.convert("L")
-
-# normaliser la taille
 img = img.resize((28, 28))
 
-# transformer en matrice
 matrix = np.array(img)
 
-# inverser les couleurs (noir/blanc)
+# inversion noir/blanc
 matrix = 255 - matrix
 
-# binarisation + vecteur
 vector = (matrix > 100).astype(int).flatten()
 
-# -------- Comparison --------
+
+# -------- Comparison (k-NN simple) --------
 
 distances = []
 
@@ -52,7 +53,7 @@ for digit in dataset:
         distance = np.sum(np.abs(vector - example))
         distances.append((distance, digit))
 
-# trier les distances
+# trier par distance
 distances.sort()
 
 # prendre les 3 plus proches
