@@ -9,11 +9,14 @@ for file in os.listdir("."):
 
         img = Image.open(file)
 
-        # convertir en matrice numpy
         matrix = np.array(img)
 
-        # transformer en vecteur (ligne de pixels)
-        vector = (matrix > 128).astype(int).flatten()
+        # binarisation
+        binary_matrix = (matrix > 128).astype(int)
 
         print(f"\nImage : {file}")
-        print(vector[:50])  # affiche seulement les 50 premiers pixels
+        print("Shape :", binary_matrix.shape)
+
+        # afficher la matrice 28x28
+        for row in binary_matrix:
+            print(" ".join(map(str, row)))

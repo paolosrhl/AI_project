@@ -14,7 +14,7 @@ for file in os.listdir("."):
 
         matrix = np.array(img)
 
-        vector = (matrix > 128).astype(int).flatten()
+        vector = vector = (matrix > 200).astype(int).flatten()
 
         digit = file.split("Group ")[1][0]
 
@@ -27,26 +27,43 @@ for file in os.listdir("."):
 
 img = Image.open("test_1.png")
 
+# convertir en grayscale
 img = img.convert("L")
+
+# normaliser la taille
 img = img.resize((28, 28))
 
+# transformer en matrice
 matrix = np.array(img)
 
-vector = (matrix > 128).astype(int).flatten()
+# inverser les couleurs (noir/blanc)
+matrix = 255 - matrix
+
+# binarisation + vecteur
+vector = (matrix > 100).astype(int).flatten()
 
 # -------- Comparison --------
 
-best_digit = None
-best_score = float("inf")
+distances = []
 
 for digit in dataset:
-
     for example in dataset[digit]:
 
         distance = np.sum(np.abs(vector - example))
+        distances.append((distance, digit))
 
-        if distance < best_score:
-            best_score = distance
-            best_digit = digit
+# trier les distances
+distances.sort()
+
+# prendre les 3 plus proches
+top3 = distances[:3]
+
+# vote
+votes = {}
+
+for _, digit in top3:
+    votes[digit] = votes.get(digit, 0) + 1
+
+best_digit = max(votes, key=votes.get)
 
 print("Digit reconnu :", best_digit)
