@@ -5,14 +5,16 @@ from PIL import Image
 for file in os.listdir("."):
 
     # ne prendre que les images déjà normalisées
-    if file.startswith("resized_") and file.endswith(".png"):
+    if file.startswith("binary") :
 
         img = Image.open(file)
+        img = img.convert("L")
+        img = img.resize((28, 28))
 
         matrix = np.array(img)
 
         # binarisation
-        binary_matrix = (matrix > 128).astype(int)
+        binary_matrix = (matrix > 100).astype(int)
 
         print(f"\nImage : {file}")
         print("Shape :", binary_matrix.shape)
