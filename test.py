@@ -32,7 +32,7 @@ for file in os.listdir("."):
 
 # -------- Load test image --------
 
-vector = preprocess_image("test_9.png")
+vector = preprocess_image("BTest_3.png")
 
 # -------- Comparison --------
 

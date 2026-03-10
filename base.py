@@ -4,7 +4,7 @@ from PIL import Image
 threshold = 128
 
 for file in os.listdir("."):
-    if file.startswith("RGroup") and file.endswith(".jpg"):
+    if file.startswith("RGroup") and file.endswith(".png"):
         img = Image.open(file)
         # grayscale
         gray = img.convert("L")
